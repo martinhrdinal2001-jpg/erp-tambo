@@ -1,6 +1,6 @@
-# ERP Tambo 🐄
+# Fundo el Raulí 🌳
 
-Sistema de planificación de recursos (ERP) para administrar un campo lechero.
+Sistema de planificación de recursos (ERP) para administrar el Fundo el Raulí, campo lechero familiar.
 Construido de forma modular e iterativa.
 
 ## Stack

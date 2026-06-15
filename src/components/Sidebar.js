@@ -29,7 +29,12 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="flex items-center gap-2 border-b border-emerald-800 px-6 py-5">
         <Milk size={24} className="text-emerald-300" />
-        <span className="text-lg font-bold">ERP Tambo</span>
+        <div className="leading-tight">
+          <div className="text-lg font-bold">Fundo el Raulí</div>
+          <div className="text-[10px] uppercase tracking-wider text-emerald-300/80">
+            Sistema de gestión
+          </div>
+        </div>
       </div>
 
       {/* Navegación */}

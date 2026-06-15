@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "ERP Tambo",
-  description: "Gestión integral del campo lechero",
+  title: "Fundo el Raulí",
+  description: "Sistema de gestión integral del campo lechero",
 };
 
 export default function RootLayout({ children }) {

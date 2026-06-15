@@ -1,4 +1,5 @@
 import Topbar from "@/components/Topbar";
+import WelcomeBanner from "@/components/WelcomeBanner";
 import { Users, Beef, Package, Wallet } from "lucide-react";
 
 const stats = [
@@ -13,9 +14,7 @@ export default function DashboardPage() {
     <>
       <Topbar title="Dashboard" />
       <div className="p-8">
-        <p className="mb-6 text-stone-500">
-          Resumen general del campo. Los datos se conectarán en próximas fases.
-        </p>
+        <WelcomeBanner />
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => {
@@ -23,7 +22,7 @@ export default function DashboardPage() {
             return (
               <div
                 key={stat.label}
-                className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm"
+                className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm transition hover:shadow-md"
               >
                 <div className={`mb-3 inline-flex rounded-lg p-2 text-white ${stat.color}`}>
                   <Icon size={20} />
