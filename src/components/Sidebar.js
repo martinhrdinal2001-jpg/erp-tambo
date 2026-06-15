@@ -11,6 +11,7 @@ import {
   LogOut,
   Milk,
 } from "lucide-react";
+import { logout } from "@/lib/auth";
 
 // Definimos el menú en un array: agregar un módulo nuevo es agregar una línea.
 const navItems = [
@@ -64,13 +65,15 @@ export default function Sidebar() {
 
       {/* Salir */}
       <div className="border-t border-emerald-800 p-3">
-        <Link
-          href="/login"
-          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-emerald-100 transition hover:bg-emerald-800"
-        >
-          <LogOut size={18} />
-          Cerrar sesión
-        </Link>
+        <form action={logout}>
+          <button
+            type="submit"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-emerald-100 transition hover:bg-emerald-800"
+          >
+            <LogOut size={18} />
+            Cerrar sesión
+          </button>
+        </form>
       </div>
     </aside>
   );

@@ -1,8 +1,13 @@
-import Link from "next/link";
-import { Milk } from "lucide-react";
+"use client";
+
+import { useFormState, useFormStatus } from "react-dom";
+import { Milk, AlertCircle, Info } from "lucide-react";
 import ScenicBackground from "@/components/ScenicBackground";
+import { login } from "@/lib/auth";
 
 export default function LoginPage() {
+  const [state, formAction] = useFormState(login, { error: null });
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Fondo escénico del Fundo el Raulí */}
@@ -25,37 +30,38 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Formulario (solo visual, sin lógica todavía) */}
-          <form className="space-y-4">
-            <div>
-              <label className="mb-1 block text-sm font-medium text-stone-700">
-                Usuario o correo
-              </label>
-              <input
-                type="text"
-                placeholder="ej: encargado@raulí.cl"
-                className="w-full rounded-lg border border-stone-300 bg-white/80 px-3 py-2 text-stone-900 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-              />
-            </div>
+          {/* Aviso demo */}
+          <div className="mb-5 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50/80 px-3 py-2 text-xs text-amber-900">
+            <Info size={14} className="mt-0.5 shrink-0" />
+            <span>
+              <strong>Versión de demostración.</strong> Los datos son ficticios y no
+              representan al fundo real.
+            </span>
+          </div>
 
+          <form action={formAction} className="space-y-4">
             <div>
               <label className="mb-1 block text-sm font-medium text-stone-700">
-                Contraseña
+                Clave de acceso
               </label>
               <input
                 type="password"
-                placeholder="••••••••"
+                name="password"
+                required
+                autoFocus
+                placeholder="Ingresá la clave compartida"
                 className="w-full rounded-lg border border-stone-300 bg-white/80 px-3 py-2 text-stone-900 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
               />
             </div>
 
-            {/* Por ahora es un link al dashboard para poder navegar mientras desarrollamos */}
-            <Link
-              href="/dashboard"
-              className="block w-full rounded-lg bg-emerald-600 py-2.5 text-center font-semibold text-white shadow-lg shadow-emerald-900/20 transition hover:bg-emerald-700"
-            >
-              Ingresar
-            </Link>
+            {state?.error && (
+              <div className="flex items-center gap-2 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700 ring-1 ring-rose-200">
+                <AlertCircle size={16} />
+                {state.error}
+              </div>
+            )}
+
+            <BotonIngresar />
           </form>
 
           <p className="mt-6 text-center text-xs text-stone-500">
@@ -64,5 +70,18 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function BotonIngresar() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="block w-full rounded-lg bg-emerald-600 py-2.5 text-center font-semibold text-white shadow-lg shadow-emerald-900/20 transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-70"
+    >
+      {pending ? "Verificando..." : "Ingresar"}
+    </button>
   );
 }
