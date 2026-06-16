@@ -8,7 +8,7 @@ export default function FinanzasPage() {
   return (
     <>
       <Topbar title="Finanzas" />
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         {/* Encabezado */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>

@@ -8,7 +8,7 @@ export default function RutinasPage() {
   return (
     <>
       <Topbar title="Rutinas y checklists" />
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <Link
           href="/dashboard/recursos-humanos"
           className="inline-flex items-center gap-1 text-sm text-emerald-700 hover:text-emerald-900"

@@ -68,8 +68,45 @@ export default function TrabajadorTable({ trabajadores }) {
         </select>
       </div>
 
-      {/* Tabla */}
-      <div className="overflow-x-auto">
+      {/* Vista MOBILE: cards */}
+      <div className="divide-y divide-stone-100 md:hidden">
+        {filtrados.map((t) => {
+          const { anios, meses } = calcularAntiguedad(t.fechaIngreso);
+          return (
+            <Link
+              key={t.id}
+              href={`/dashboard/recursos-humanos/${t.id}`}
+              className="flex items-center justify-between gap-3 px-4 py-3 transition active:bg-emerald-50"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-sm font-medium text-stone-800">
+                  {t.nombre}
+                </div>
+                <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
+                  <span>{t.rol}</span>
+                  <span>{t.sector}</span>
+                  <span>
+                    {anios > 0 ? `${anios} a ` : ""}
+                    {meses} m
+                  </span>
+                </div>
+                <div className="mt-2">
+                  <EstadoBadge estado={t.estado} />
+                </div>
+              </div>
+              <ChevronRight size={18} className="shrink-0 text-stone-400" />
+            </Link>
+          );
+        })}
+        {filtrados.length === 0 && (
+          <div className="px-4 py-12 text-center text-sm text-stone-400">
+            No se encontraron trabajadores con esos filtros.
+          </div>
+        )}
+      </div>
+
+      {/* Vista DESKTOP: tabla */}
+      <div className="hidden overflow-x-auto md:block">
         <table className="w-full text-sm">
           <thead className="border-b border-stone-200 bg-stone-50 text-left text-xs uppercase tracking-wider text-stone-500">
             <tr>

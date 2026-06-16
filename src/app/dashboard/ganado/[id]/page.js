@@ -13,7 +13,7 @@ export default function VacaDetallePage({ params }) {
   return (
     <>
       <Topbar title={`Vaca #${vaca.caravana}`} />
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <FichaVaca vaca={vaca} />
       </div>
     </>

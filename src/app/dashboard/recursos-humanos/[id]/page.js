@@ -13,7 +13,7 @@ export default function TrabajadorDetallePage({ params }) {
   return (
     <>
       <Topbar title="Ficha del trabajador" />
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <FichaTrabajador trabajador={trabajador} />
       </div>
     </>

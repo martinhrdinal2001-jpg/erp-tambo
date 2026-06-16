@@ -74,8 +74,65 @@ export default function ItemTable({ items }) {
         </label>
       </div>
 
-      {/* Tabla */}
-      <div className="overflow-x-auto">
+      {/* Vista MOBILE: cards */}
+      <div className="divide-y divide-stone-100 md:hidden">
+        {filtrados.map((i) => {
+          const cat = getCategoriaById(i.categoria);
+          const bajo = tieneStockBajo(i);
+          const porVencer = venceProximamente(i);
+          const dias = diasParaVencer(i);
+          return (
+            <div key={i.id} className="px-4 py-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Package size={14} className="shrink-0 text-stone-400" />
+                  <span className="text-sm font-medium text-stone-800">
+                    {i.nombre}
+                  </span>
+                </div>
+                <span className="text-sm font-semibold text-stone-800">
+                  {i.stockActual} {i.unidad}
+                </span>
+              </div>
+              <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
+                <span className="inline-flex items-center gap-1.5">
+                  <span
+                    className={`h-2 w-2 rounded-full ${cat?.color || "bg-stone-300"}`}
+                  />
+                  {cat?.nombre || "Sin categoría"}
+                </span>
+                <span>{i.presentacion}</span>
+                <span>mín: {i.stockMinimo}</span>
+                {i.proveedor && <span>· {i.proveedor}</span>}
+              </div>
+              {(bajo || porVencer) && (
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {bajo && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                      <AlertTriangle size={11} />
+                      Stock bajo
+                    </span>
+                  )}
+                  {porVencer && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-700">
+                      <Clock size={11} />
+                      Vence en {dias} d
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+        {filtrados.length === 0 && (
+          <div className="px-4 py-12 text-center text-sm text-stone-400">
+            No se encontraron items con esos filtros.
+          </div>
+        )}
+      </div>
+
+      {/* Vista DESKTOP: tabla */}
+      <div className="hidden overflow-x-auto md:block">
         <table className="w-full text-sm">
           <thead className="border-b border-stone-200 bg-stone-50 text-left text-xs uppercase tracking-wider text-stone-500">
             <tr>

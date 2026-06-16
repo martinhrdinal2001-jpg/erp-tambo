@@ -86,7 +86,7 @@ export default function DashboardPage() {
   return (
     <>
       <Topbar title="Dashboard" />
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <WelcomeBanner />
 
         {/* Stats */}

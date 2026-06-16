@@ -88,8 +88,56 @@ export default function VacaTable({ vacas }) {
         </select>
       </div>
 
-      {/* Tabla */}
-      <div className="overflow-x-auto">
+      {/* Vista MOBILE: cards (visible debajo de md) */}
+      <div className="divide-y divide-stone-100 md:hidden">
+        {visibles.map((v) => {
+          const del = calcularDEL(v.ultimoParto);
+          const prod = produccionEstimada(v);
+          const lote = getLoteById(v.lote);
+          return (
+            <Link
+              key={v.id}
+              href={`/dashboard/ganado/${v.id}`}
+              className="flex items-center justify-between gap-3 px-4 py-3 transition active:bg-emerald-50"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-sm font-semibold text-emerald-700">
+                    #{v.caravana}
+                  </span>
+                  {v.nombre && (
+                    <span className="truncate text-sm font-medium text-stone-800">
+                      {v.nombre}
+                    </span>
+                  )}
+                </div>
+                <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
+                  {lote && <span>{lote.nombre.split("—")[0].trim()}</span>}
+                  <span>Lact. {v.numLactancia}</span>
+                  {del !== null && <span>{del} DEL</span>}
+                  {prod > 0 && (
+                    <span className="font-semibold text-stone-700">
+                      {prod} L
+                    </span>
+                  )}
+                </div>
+                <div className="mt-2">
+                  <EstadoVacaBadge estado={v.estado} />
+                </div>
+              </div>
+              <ChevronRight size={18} className="shrink-0 text-stone-400" />
+            </Link>
+          );
+        })}
+        {visibles.length === 0 && (
+          <div className="px-4 py-12 text-center text-sm text-stone-400">
+            No se encontraron vacas con esos filtros.
+          </div>
+        )}
+      </div>
+
+      {/* Vista DESKTOP: tabla (visible desde md) */}
+      <div className="hidden overflow-x-auto md:block">
         <table className="w-full text-sm">
           <thead className="border-b border-stone-200 bg-stone-50 text-left text-xs uppercase tracking-wider text-stone-500">
             <tr>
