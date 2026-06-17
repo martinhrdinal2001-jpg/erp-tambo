@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { Milk, AlertCircle, Info } from "lucide-react";
 import ScenicBackground from "@/components/ScenicBackground";
@@ -7,14 +8,36 @@ import { login } from "@/lib/auth";
 
 export default function LoginPage() {
   const [state, formAction] = useFormState(login, { error: null });
+  const [fotoLista, setFotoLista] = useState(false);
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Fondo escénico del Fundo el Raulí */}
+      {/* Capa 1: SVG escénico (fallback si no hay foto) */}
       <ScenicBackground className="absolute inset-0 h-full w-full" />
 
-      {/* Velo translúcido para suavizar el fondo */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/30 via-emerald-900/10 to-amber-100/20" />
+      {/* Capa 2: Foto real del Fundo en /public/fotos/fundo-rauli.jpg
+          Arranca invisible (opacity-0). Si la foto carga bien, fade-in.
+          Si no existe el archivo, queda invisible y solo se ve el SVG de abajo. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/fotos/fundo-rauli.jpg"
+        alt=""
+        aria-hidden="true"
+        onLoad={() => setFotoLista(true)}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+          fotoLista ? "opacity-100" : "opacity-0"
+        }`}
+      />
+
+      {/* Velo translúcido para suavizar el fondo y dar contraste a la tarjeta.
+          Se intensifica cuando hay foto, para mantener legibilidad. */}
+      <div
+        className={`absolute inset-0 transition-opacity ${
+          fotoLista
+            ? "bg-gradient-to-br from-emerald-950/55 via-emerald-900/30 to-amber-100/10"
+            : "bg-gradient-to-br from-emerald-900/30 via-emerald-900/10 to-amber-100/20"
+        }`}
+      />
 
       {/* Contenido */}
       <div className="relative flex min-h-screen items-center justify-center px-4">
