@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { Milk, AlertCircle, Info } from "lucide-react";
 import ScenicBackground from "@/components/ScenicBackground";
@@ -9,6 +9,16 @@ import { login } from "@/lib/auth";
 export default function LoginPage() {
   const [state, formAction] = useFormState(login, { error: null });
   const [fotoLista, setFotoLista] = useState(false);
+  const imgRef = useRef(null);
+
+  // Si la foto ya está en cache cuando React monta el <img>, onLoad no dispara.
+  // Verificamos al mount: si está completa y tiene contenido, marcarla lista.
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete && img.naturalWidth > 0) {
+      setFotoLista(true);
+    }
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -20,6 +30,7 @@ export default function LoginPage() {
           Si no existe el archivo, queda invisible y solo se ve el SVG de abajo. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
+        ref={imgRef}
         src="/fotos/fundo-rauli.jpg"
         alt=""
         aria-hidden="true"
