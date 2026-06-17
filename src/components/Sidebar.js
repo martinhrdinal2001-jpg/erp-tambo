@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
+  Radio,
   Users,
   Beef,
   Package,
@@ -18,6 +19,7 @@ import { useSidebar } from "@/components/SidebarContext";
 // Definimos el menú en un array: agregar un módulo nuevo es agregar una línea.
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Monitor Campo", href: "/dashboard/monitor-campo", icon: Radio, destacado: true },
   { name: "Recursos Humanos", href: "/dashboard/recursos-humanos", icon: Users },
   { name: "Ganado", href: "/dashboard/ganado", icon: Beef },
   { name: "Inventario", href: "/dashboard/inventario", icon: Package },
@@ -85,7 +87,13 @@ export default function Sidebar() {
                 }`}
               >
                 <Icon size={18} />
-                {item.name}
+                <span className="flex-1">{item.name}</span>
+                {item.destacado && (
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-rose-500" />
+                  </span>
+                )}
               </Link>
             );
           })}

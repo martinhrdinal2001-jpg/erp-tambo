@@ -2,9 +2,14 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Search, ChevronRight } from "lucide-react";
+import { Search, ChevronRight, GraduationCap } from "lucide-react";
 import EstadoBadge from "@/components/rrhh/EstadoBadge";
-import { calcularAntiguedad, ROLES, ESTADOS } from "@/data/trabajadores";
+import {
+  calcularAntiguedad,
+  estaEnOnboarding,
+  ROLES,
+  ESTADOS,
+} from "@/data/trabajadores";
 
 export default function TrabajadorTable({ trabajadores }) {
   const [busqueda, setBusqueda] = useState("");
@@ -90,8 +95,14 @@ export default function TrabajadorTable({ trabajadores }) {
                     {meses} m
                   </span>
                 </div>
-                <div className="mt-2">
+                <div className="mt-2 flex flex-wrap items-center gap-1.5">
                   <EstadoBadge estado={t.estado} />
+                  {estaEnOnboarding(t) && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-700 ring-1 ring-inset ring-sky-200">
+                      <GraduationCap size={11} />
+                      Onboarding
+                    </span>
+                  )}
                 </div>
               </div>
               <ChevronRight size={18} className="shrink-0 text-stone-400" />
@@ -132,7 +143,15 @@ export default function TrabajadorTable({ trabajadores }) {
                     {anios > 0 ? `${anios} a` : ""} {meses} m
                   </td>
                   <td className="px-4 py-3">
-                    <EstadoBadge estado={t.estado} />
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <EstadoBadge estado={t.estado} />
+                      {estaEnOnboarding(t) && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-700 ring-1 ring-inset ring-sky-200">
+                          <GraduationCap size={11} />
+                          Onboarding
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link

@@ -10,7 +10,8 @@ import {
   StickyNote,
 } from "lucide-react";
 import EstadoBadge from "@/components/rrhh/EstadoBadge";
-import { calcularAntiguedad } from "@/data/trabajadores";
+import ResumenOnboarding from "@/components/rrhh/ResumenOnboarding";
+import { calcularAntiguedad, estaEnOnboarding } from "@/data/trabajadores";
 
 function Campo({ Icon, label, children }) {
   return (
@@ -107,6 +108,11 @@ export default function FichaTrabajador({ trabajador }) {
           </div>
         )}
       </div>
+
+      {/* Sección de onboarding — solo para trabajadores nuevos */}
+      {estaEnOnboarding(trabajador) && (
+        <ResumenOnboarding trabajador={trabajador} />
+      )}
     </div>
   );
 }

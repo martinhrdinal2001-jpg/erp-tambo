@@ -202,12 +202,20 @@ export const TRABAJADORES = [
     nombre: "Daniel Vergara Cumin",
     rol: "Peón general",
     estado: "Activo",
-    fechaIngreso: "2023-02-01",
+    fechaIngreso: "2026-02-01",
     telefono: "+56 9 5678 9012",
     rut: "20.123.456-K",
     sector: "Operaciones",
     viveEnElCampo: true,
-    notas: "El más nuevo del equipo. Aún en proceso de capacitación.",
+    notas: "Avanzando bien en onboarding. Cierra su 4ª semana este mes.",
+    rutinasCompletadas: [
+      "onb-induccion",
+      "onb-manejo-rebano",
+      "onb-anatomia-ordene",
+      "onb-sanidad",
+      "onb-celo-reproduccion",
+      "onb-pastoreo",
+    ],
   },
   {
     id: 17,
@@ -226,12 +234,18 @@ export const TRABAJADORES = [
     nombre: "Diego Ávila Morán",
     rol: "Ordeñador",
     estado: "Activo",
-    fechaIngreso: "2023-11-20",
+    fechaIngreso: "2026-04-15",
     telefono: "+56 9 3456 7890",
     rut: "20.567.890-1",
     sector: "Sala de ordeñe",
     viveEnElCampo: true,
-    notas: "Onboarding reciente, cubriendo licencia de Fernando.",
+    notas: "Cubriendo la licencia de Fernando. Va por la semana 3 del onboarding.",
+    rutinasCompletadas: [
+      "onb-induccion",
+      "onb-manejo-rebano",
+      "onb-anatomia-ordene",
+      "onb-sanidad",
+    ],
   },
   {
     id: 19,
@@ -257,6 +271,19 @@ export const TRABAJADORES = [
     viveEnElCampo: true,
     notas: "Apoyo a Carolina en crianza, también colabora en sanidad básica.",
   },
+  {
+    id: 21,
+    nombre: "Camila Andrade Huilipán",
+    rol: "Ordeñador",
+    estado: "Activo",
+    fechaIngreso: "2026-06-01",
+    telefono: "+56 9 4123 0876",
+    rut: "21.345.789-2",
+    sector: "Sala de ordeñe",
+    viveEnElCampo: true,
+    notas: "Recién contratada. Va por la semana 1 del onboarding, acompañando a María Soledad.",
+    rutinasCompletadas: ["onb-induccion", "onb-manejo-rebano"],
+  },
 ];
 
 // Helpers que vamos a usar en varios lugares
@@ -274,4 +301,23 @@ export function calcularAntiguedad(fechaIngreso) {
     meses += 12;
   }
   return { anios, meses };
+}
+
+// Un trabajador está "en onboarding" si entró hace menos de 6 meses y está activo.
+export function estaEnOnboarding(trabajador) {
+  if (trabajador.estado !== "Activo") return false;
+  const { anios, meses } = calcularAntiguedad(trabajador.fechaIngreso);
+  return anios === 0 && meses < 6;
+}
+
+export function trabajadoresEnOnboarding() {
+  return TRABAJADORES.filter(estaEnOnboarding);
+}
+
+// Devuelve el % de rutinas de onboarding completadas (0-100).
+// Necesita el total de rutinas de onboarding como argumento para no acoplar archivos.
+export function progresoOnboarding(trabajador, totalRutinasOnboarding) {
+  if (!totalRutinasOnboarding || totalRutinasOnboarding === 0) return 0;
+  const completadas = (trabajador.rutinasCompletadas || []).length;
+  return Math.round((completadas / totalRutinasOnboarding) * 100);
 }
