@@ -8,6 +8,7 @@ import {
   Wallet,
   AlertTriangle,
   ChevronRight,
+  Sparkles,
 } from "lucide-react";
 import { TRABAJADORES } from "@/data/trabajadores";
 import { VACAS, produccionEstimada } from "@/data/ganado";
@@ -17,6 +18,7 @@ import {
   totalesDelMes,
   formatCLP,
 } from "@/data/finanzas";
+import { analizarTodo } from "@/lib/analytics";
 
 export default function DashboardPage() {
   // Métricas reales sacadas de los mocks
@@ -83,11 +85,68 @@ export default function DashboardPage() {
     (i) => tieneStockBajo(i) || venceProximamente(i)
   ).slice(0, 5);
 
+  // Recomendación más urgente del motor analítico
+  const { pastoreo, riego, anomalias } = analizarTodo();
+  const decisiones = [pastoreo, riego].filter((d) => d.severidad !== "VERDE");
+  const decisionTop =
+    decisiones.find((d) => d.severidad === "ROJO") ||
+    decisiones.find((d) => d.severidad === "AMARILLO") ||
+    null;
+
   return (
     <>
       <Topbar title="Dashboard" />
       <div className="p-4 sm:p-8">
         <WelcomeBanner />
+
+        {/* Franja con la recomendación más urgente del motor analítico */}
+        {decisionTop && (
+          <Link
+            href="/dashboard/recomendaciones"
+            className={`mb-6 flex flex-col gap-2 rounded-2xl border p-4 shadow-sm transition hover:shadow-md sm:flex-row sm:items-center sm:justify-between ${
+              decisionTop.severidad === "ROJO"
+                ? "border-rose-200 bg-rose-50"
+                : "border-amber-200 bg-amber-50"
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              <div
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+                  decisionTop.severidad === "ROJO"
+                    ? "bg-rose-500 text-white"
+                    : "bg-amber-500 text-white"
+                }`}
+              >
+                <Sparkles size={18} />
+              </div>
+              <div>
+                <p
+                  className={`text-xs font-semibold uppercase tracking-wider ${
+                    decisionTop.severidad === "ROJO"
+                      ? "text-rose-700"
+                      : "text-amber-800"
+                  }`}
+                >
+                  Recomendación del motor — {decisionTop.severidad === "ROJO" ? "actuar ahora" : "revisar hoy"}
+                </p>
+                <p className="text-sm font-bold text-stone-900">
+                  {decisionTop.recomendacion.replace(/_/g, " ")} ·{" "}
+                  <span className="font-normal text-stone-700">
+                    {decisionTop.razon}
+                  </span>
+                </p>
+                {anomalias.length > 0 && (
+                  <p className="mt-1 text-xs text-stone-600">
+                    + {anomalias.length} anomalía{anomalias.length > 1 ? "s" : ""} de producción detectada{anomalias.length > 1 ? "s" : ""}.
+                  </p>
+                )}
+              </div>
+            </div>
+            <span className="inline-flex items-center gap-1 text-sm font-semibold text-stone-700">
+              Ver detalle <ChevronRight size={14} />
+            </span>
+          </Link>
+        )}
 
         {/* Stats */}
         <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

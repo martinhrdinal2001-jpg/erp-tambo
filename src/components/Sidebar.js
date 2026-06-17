@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Radio,
+  Sparkles,
   Users,
   Beef,
   Package,
@@ -19,6 +20,7 @@ import { useSidebar } from "@/components/SidebarContext";
 // Definimos el menú en un array: agregar un módulo nuevo es agregar una línea.
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Recomendaciones", href: "/dashboard/recomendaciones", icon: Sparkles, badge: "nuevo" },
   { name: "Monitor Campo", href: "/dashboard/monitor-campo", icon: Radio, destacado: true },
   { name: "Recursos Humanos", href: "/dashboard/recursos-humanos", icon: Users },
   { name: "Ganado", href: "/dashboard/ganado", icon: Beef },
@@ -92,6 +94,11 @@ export default function Sidebar() {
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-rose-500" />
+                  </span>
+                )}
+                {item.badge && (
+                  <span className="rounded-full bg-purple-500 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+                    {item.badge}
                   </span>
                 )}
               </Link>
